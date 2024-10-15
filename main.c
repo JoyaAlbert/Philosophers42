@@ -4,9 +4,12 @@ void fork_init(t_data *data)
 {
 	int i;
 
+	
 	i = 0;
 	while(i < data->phi_num)
 	{
+		data->philos[i].eat_status = 0;
+		data->philos[i].dead = 0;
 		data->philos[i].r_f = &data->forks[i];
 		data->philos[i].l_f = &data->forks[i + 1];
 		i++;
@@ -30,10 +33,12 @@ int datainit(int argc, t_data *data)
 		return (-1);
 	while(i < data->phi_num)
 	{
-		data->philos->data = data;
-		data->philos->eated = 0;
-		data->philos->id = i;
+		data->philos[i].data = data;
+		data->philos[i].eated = 0;
+		data->philos[i].id = i;
+		data->philos[i].ttd = data->ttd;
 		pthread_mutex_init(&data->forks[i], NULL);
+		pthread_mutex_init(&data->philos[i].block, NULL);
 		i++;
 	}
 	fork_init(data);
@@ -44,7 +49,7 @@ int datatake(char **argv, t_data *data)
 	int i;
 	int	j;
 
-	i = 0;
+	i = 1;
 	while (argv[i] != NULL)
 	{
 		j = 0;
@@ -69,17 +74,19 @@ int datatake(char **argv, t_data *data)
 
 int	main(int argc, char **argv)
 {
-	t_data *data;
-
-	data = NULL;
+	t_data data;
+	
 	if (argc < 5 || argc > 6)
 		printf("Input example-> ./philo 5 800 200 200 7(optional)\n");
 	else
 	{
-		if(datatake(argv, data) == -1)
+		if(datatake(argv, &data) == -1)
 			return (0);
-		if(data->phi_num == 1)
-			one_philo();
+		if(data.phi_num == 1)
+			onephilo(&data);
+		//else
 	}
+	
+	destroy_frees(&data);
 	return (0);
 }

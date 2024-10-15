@@ -1,5 +1,13 @@
 #include "header_philo.h"
 
+void    nap(unsigned int alarm)
+{
+    unsigned int gotobed;
+
+    gotobed = time_state();
+    while (((time_state() - gotobed)) < alarm)
+        usleep(1);
+}
 unsigned int time_state(void)
 {
     struct timeval time;

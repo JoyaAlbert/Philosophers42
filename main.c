@@ -11,7 +11,10 @@ void fork_init(t_data *data)
 		data->philos[i].eat_status = 0;
 		data->philos[i].dead = 0;
 		data->philos[i].r_f = &data->forks[i];
-		data->philos[i].l_f = &data->forks[i + 1];
+		if(i == 0)
+			data->philos[i].l_f = &data->forks[data->phi_num - 1];
+		else
+			data->philos[i].l_f = &data->forks[i - 1];
 		i++;
 	}
 }

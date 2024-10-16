@@ -19,7 +19,7 @@ void *is_alive(void *phill)
 		}
 		if(entitie->eat_status == 0 && time_state() >= (unsigned) entitie->ttd)
 		{
-			printf("muereeeee");
+			info_user(0);
 			entitie->dead = 1;
 		}
 		pthread_mutex_unlock(&entitie->block);
@@ -38,7 +38,7 @@ void *routine(void *phill)
 	while(entitie->dead == 0)
 	{
 		eat(phill);
-		printf("piensa putaaaa");
+		info_user(2);
 	}
 	if(pthread_join(entitie->first_thread, NULL))
 		return (void *)1;

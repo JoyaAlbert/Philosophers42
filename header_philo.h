@@ -49,4 +49,6 @@ int     ft_isdigit(int c);
 //timing
 unsigned int time_state(void);
 void    nap(unsigned int alarm);
+void info_user(int state);
+
 #endif

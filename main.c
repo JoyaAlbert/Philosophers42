@@ -1,15 +1,18 @@
 #include "header_philo.h"
 
-void fork_init(t_data *data)
+void fork_data_init(t_data *data)
 {
 	int i;
 
-	
 	i = 0;
+	data->done = 0;
+	data->dead = 0;
+	pthread_mutex_init(&data->block, NULL);
+	pthread_mutex_init(&data->to_print, NULL);
 	while(i < data->phi_num)
 	{
 		data->philos[i].eat_status = 0;
-		data->philos[i].dead = 0;
+		data->philos[i].filled = 0;
 		data->philos[i].r_f = &data->forks[i];
 		if(i == 0)
 			data->philos[i].l_f = &data->forks[data->phi_num - 1];
@@ -44,7 +47,7 @@ int datainit(int argc, t_data *data)
 		pthread_mutex_init(&data->philos[i].block, NULL);
 		i++;
 	}
-	fork_init(data);
+	fork_data_init(data);
 	return (0);
 }
 int datatake(char **argv, t_data *data)
@@ -71,7 +74,7 @@ int datatake(char **argv, t_data *data)
 	if (argv[5] != NULL)
 		data->n_toeat = ft_atoi(argv[5]);
 	else
-		data->n_toeat = 0;
+		data->n_toeat = -1;
 	return (datainit(i, data));
 }
 
@@ -84,12 +87,16 @@ int	main(int argc, char **argv)
 	else
 	{
 		if(datatake(argv, &data) == -1)
+		{
+			printf("Acepted Args->Only positive numbers|0 < nºphill < 200\n");
+			printf("Input example-> ./philo 5 800 200 200 7(optional)\n");
 			return (0);
+		}
 		if(data.phi_num == 1)
 			onephilo(&data);
-		//else
+		else
+			morephilo(&data);
 	}
-	
 	destroy_frees(&data);
 	return (0);
 }

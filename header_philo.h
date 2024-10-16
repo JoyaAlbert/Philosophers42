@@ -17,9 +17,10 @@ typedef struct s_start_data
     int tts;
     int n_toeat;
     int done;
+    int dead;
     pthread_t *thread_id;
     pthread_mutex_t block;
-    pthread_mutex_t open;
+    pthread_mutex_t to_print;
     pthread_mutex_t *forks;
 } t_data;
 
@@ -30,7 +31,7 @@ typedef struct s_philos
     int eat_status;
     int eated;
     int ttd;
-    int dead;
+    int filled;
     pthread_mutex_t *r_f;
     pthread_mutex_t *l_f;;
     pthread_mutex_t block;
@@ -39,8 +40,9 @@ typedef struct s_philos
 
 //threads
 void *routine(void *phil);
-void eat(t_philos *philo);
+void *eat(t_philos *philo);
 int onephilo(t_data *data);
+int morephilo(t_data *data);
 void destroy_frees(t_data *data);
 
 //utils
@@ -48,7 +50,7 @@ long	ft_atoi(char *str);
 int     ft_isdigit(int c);
 //timing
 unsigned int time_state(void);
-void    nap(unsigned int alarm);
-void info_user(int state);
+void        nap(unsigned int alarm);
+void           info_user(int state, t_philos *phill);
 
 #endif

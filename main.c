@@ -89,7 +89,7 @@ int	main(int argc, char **argv)
 		if(datatake(argv, &data) == -1)
 		{
 			printf("Acepted Args->Only positive numbers|0 < nºphill < 200\n");
-			printf("Input example-> ./philo 5 800 200 200 7(optional)\n");
+			printf("\n\nInput example-> ./philo 5 800 200 200 7(optional)\n\n");
 			return (0);
 		}
 		if(data.phi_num == 1)

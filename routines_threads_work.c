@@ -21,13 +21,14 @@ int	morephilo(t_data *data)
 		if (pthread_create(&data->thread_id[i], NULL, &life, &data->philos[i]))
 			return (-1);
 		i++;
-		nap(1);
+		usleep(0);
 	}
 	i = 0;
 	while (i < data->phi_num)
 	{
 		if (pthread_join(data->thread_id[i], NULL))
 			return (-1);
+		usleep(0);
 		i++;
 	}
 	return (0);
@@ -40,6 +41,7 @@ void	*is_alive(void *phill)
 	entitie = (t_philos *) phill;
 	while (entitie->data->dead == 0)
 	{
+		usleep(0);
 		pthread_mutex_lock(&entitie->block);
 		pthread_mutex_lock(&entitie->data->block);
 		if (entitie->eated == entitie->data->n_toeat)

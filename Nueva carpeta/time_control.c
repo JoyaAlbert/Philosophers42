@@ -51,7 +51,7 @@ void	info_user(int state, t_philos *phill)
 		printf("\033[1;31m""At %u ms Philo %d is dead RIP\n", inst, phill->id);
 		pthread_mutex_unlock(&phill->data->to_print);
 		//exit(EXIT_FAILURE);
-		destroy_frees(phill->data);
+		//destroy_frees(phill->data);
 	}
 	if (state == 1)
 		printf("At %u ms Philo %d is""\033[1;34m"

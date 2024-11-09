@@ -16,15 +16,15 @@ int	check_finished(t_philos *phill)
 	t_data	*data;
 
 	data = (t_data *) phill->data;
-	//if (phill->eated == data->n_toeat)
-	//{
-	//	pthread_mutex_lock(&data->block);
-	//	data->done++;
-	//	pthread_mutex_unlock(&data->block);
-	//}
+	if (phill->eated == data->n_toeat)
+	{
+		pthread_mutex_lock(&data->block);
+		data->done++;
+		pthread_mutex_unlock(&data->block);
+	}
 	pthread_mutex_lock(&data->block);	
 	if (data->done >= data->phi_num)
-			return (0);
+			data->dead = 1;
 	if (data->done != data->phi_num && data->dead == 0)
 	{
 		pthread_mutex_unlock(&data->block);
@@ -52,7 +52,7 @@ void	*is_alive(void *p_data)
 			pthread_mutex_lock(&philo->block);
 			time = (unsigned) philo->ttd;
 			pthread_mutex_unlock(&philo->block);
-			if (time_state() > time)
+			if (time_state() > time && data->done < data->phi_num)
 				info_user(0, philo);
 		}
 		usleep(1);
@@ -66,15 +66,11 @@ void	*life(void *phill)
 	t_philos	*entitie;
 
 	entitie = (t_philos *) phill;
-	pthread_mutex_lock(&entitie->block);
-	pthread_mutex_lock(&entitie->data->block);
-	entitie->ttd = entitie->data->ttd + time_state();
-	pthread_mutex_lock(&entitie->data->block);
-	pthread_mutex_unlock(&entitie->block);
 	if (entitie->id % 2 == 0)
 		usleep(30);
 	while (check_finished(phill) == 1)
 	{
+		usleep(0);
 		eat(phill);
 		info_user(3, phill);
 	}

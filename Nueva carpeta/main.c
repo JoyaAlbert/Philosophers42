@@ -12,7 +12,6 @@ void	fork_data_init(t_data *data)
 	while (i < data->phi_num)
 	{
 		data->philos[i].eat_status = 0;
-		data->philos[i].filled = 0;
 		data->philos[i].r_f = &data->forks[i];
 		if (i == 0)
 			data->philos[i].l_f = &data->forks[data->phi_num - 1];
@@ -84,8 +83,8 @@ int	main(int argc, char **argv)
 	t_data	*data;
 
 	data = malloc(sizeof(t_data));
-	if(data == NULL)
-		return(0);
+	if (data == NULL)
+		return (0);
 	if (argc < 5 || argc > 6)
 		printf("Input example-> ./philo 5 800 200 200 7(optional)\n");
 	else

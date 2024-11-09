@@ -2,24 +2,31 @@
 
 void	*eat(t_philos *philo)
 {
-	pthread_mutex_lock(philo->l_f);
-	pthread_mutex_lock(philo->r_f);
+	pthread_mutex_t *first_fork;
+    pthread_mutex_t *second_fork;
+
+    // Lock the left and right fork in order of memory address (or index)
+    if (philo->l_f < philo->r_f) {
+        first_fork = philo->l_f;
+        second_fork = philo->r_f;
+    } else {
+        first_fork = philo->r_f;
+        second_fork = philo->l_f;
+    }
+	pthread_mutex_lock(first_fork);
+	pthread_mutex_lock(second_fork);
 	info_user(4, philo);
 	info_user(5, philo);
 	pthread_mutex_lock(&philo->block);
 	philo->ttd = time_state() + philo->data->ttd;
-	philo->eat_status = 1;
 	philo->eated++;
 	pthread_mutex_unlock(&philo->block);
 	info_user(1, philo);
 	nap(philo->data->tte);
-	pthread_mutex_lock(&philo->block);
-	philo->eat_status = 0;
-	pthread_mutex_unlock(&philo->block);
-	pthread_mutex_unlock(philo->l_f);
-	pthread_mutex_unlock(philo->r_f);
-	info_user(2, philo);
-	nap(philo->data->tts);
+	usleep(1);
+	pthread_mutex_unlock(first_fork);
+	pthread_mutex_unlock(second_fork);
+	
 	return (0);
 }
 
@@ -46,12 +53,15 @@ void	info_user(int state, t_philos *phill)
 
 	pthread_mutex_lock(&phill->data->to_print);
 	inst = time_state() - phill->data->s_time;
+	if(phill->data->dead != 0)
+	{
+		pthread_mutex_unlock(&phill->data->to_print);
+		return ((void)NULL);
+	}
 	if (state == 0)
 	{
 		printf("\033[1;31m""At %u ms Philo %d is dead RIP\n", inst, phill->id);
-		pthread_mutex_unlock(&phill->data->to_print);
-		//exit(EXIT_FAILURE);
-		//destroy_frees(phill->data);
+		phill->data->dead++;
 	}
 	if (state == 1)
 		printf("At %u ms Philo %d is""\033[1;34m"

@@ -42,7 +42,7 @@ int	datainit(int argc, t_data *data)
 		data->philos[i].data = data;
 		data->philos[i].eated = 0;
 		data->philos[i].id = i;
-		data->philos[i].ttd = data->ttd+ time_state();
+		data->philos[i].ttd = data->ttd + time_state();
 		pthread_mutex_init(&data->forks[i], NULL);
 		pthread_mutex_init(&data->philos[i].block, NULL);
 		i++;

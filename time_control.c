@@ -49,7 +49,7 @@ void	info_user(int state, t_philos *phill)
 	if (state == 0)
 	{
 		printf("\033[1;31m""At %u ms Philo %d is dead RIP\n", inst, phill->id);
-		exit(EXIT_FAILURE);
+		//exit(EXIT_FAILURE);
 		//destroy_frees(phill->data);
 	}
 	if (state == 1)

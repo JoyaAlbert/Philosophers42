@@ -5,7 +5,7 @@ SRC             =   main.c \
 					utils/ft_atoi.c
 
 CC          =   gcc
-CFLAGS          =   -Wall -Wextra -Werror -g3 -g -fsanitize=address
+CFLAGS          =   -Wall -Wextra -Werror -g3 -g #-fsanitize=address
 RM              =   rm -f
 CLR_RMV     := \033[0m
 RED         := \033[1;31m

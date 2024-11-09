@@ -51,5 +51,6 @@ int				ft_isdigit(int c);
 unsigned int	time_state(void);
 void			nap(unsigned int alarm);
 void			info_user(int state, t_philos *phill);
+int	check_finished(t_philos *phill);
 
 #endif

@@ -25,6 +25,7 @@ int	morephilo(t_data *data)
 
 	i = 0;
 	data->s_time = time_state();
+	startimes(data);
 	if (pthread_create(&status_thread, NULL, &is_alive, (void *)data))
 		return (-1);
 	pthread_detach(status_thread);

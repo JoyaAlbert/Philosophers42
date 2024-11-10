@@ -27,7 +27,7 @@ int	datainit(int argc, t_data *data)
 
 	i = 0;
 	if (data->phi_num <= 0 || data->ttd <= 0 || data->tte <= 0
-		|| data->tts <= 0 || data->phi_num > 200)
+		|| data->tts <= 0 || data->phi_num > 100)
 		return (-1);
 	if (argc != 6)
 		data->n_toeat = -1;
@@ -92,7 +92,7 @@ int	main(int argc, char **argv)
 		if (datatake(argv, data) == -1)
 		{
 			printf("\n""\033[1;31m"
-				"Acepted Args->Only positive numbers & 0 < nºphill < 200"
+				"Acepted Args->Only positive numbers & 0 < nºphill < 100"
 				"\033[1;34m"
 				"\nInput example-> ./philo 5 800 200 200 7(optional)\n\n");
 			return (0);

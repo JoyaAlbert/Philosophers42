@@ -57,19 +57,20 @@ void	printmsg(int state, t_philos *phill, unsigned int inst)
 	}
 	if (state == 1)
 		printf("At %u ms Philo %d is""\033[1;34m"
-			" eating""\033[0m" "(taste bad)\n", inst, phill->id);
+			" eating\n", inst, phill->id + 1);
 	if (state == 2)
 		printf("At %u ms Philo %d is "
-			"\033[1;32m""sleeping" "\033[0m""\n", inst, phill->id);
+			"\033[1;32m""sleeping\n", inst, phill->id + 1);
 	if (state == 3)
 		printf("At %u ms Philo %d is""\033[1;35m"
-			" thinking\n""\033[0m", inst, phill->id);
+			" thinking\n", inst, phill->id + 1);
 	if (state == 4)
 		printf("At %u ms Philo %d take 1st ""\033[1;33m"
-			"fork \n""\033[0m", inst, phill->id);
+			"fork \n", inst, phill->id + 1);
 	if (state == 5)
 		printf("At %u ms Philo %d take 2nd ""\033[1;33m"
-			"fork \n""\033[0m", inst, phill->id);
+			"fork \n", inst, phill->id + 1);
+	printf("\033[0m");
 	pthread_mutex_unlock(&phill->data->to_print);
 	pthread_mutex_unlock(&phill->data->block);
 }

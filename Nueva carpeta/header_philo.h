@@ -31,7 +31,6 @@ typedef struct s_philos
 	int				eat_status;
 	int				eated;
 	int				ttd;
-	//int				filled;
 	pthread_mutex_t	*r_f;
 	pthread_mutex_t	*l_f;
 	pthread_mutex_t	block;

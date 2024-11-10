@@ -60,7 +60,7 @@ void	*life(void *phill)
 	t_philos	*entitie;
 
 	entitie = (t_philos *) phill;
-	if (entitie->id + 1 % 2 == 0)
+	if (entitie->id  % 2 == 0)
 		usleep(50);
 	while (check_finished(entitie) == 1)
 	{

@@ -51,10 +51,7 @@ void	printmsg(int state, t_philos *phill, unsigned int inst)
 	pthread_mutex_lock(&phill->data->to_print);
 	pthread_mutex_lock(&phill->data->block);
 	if (state == 0)
-	{
-		printf("\033[1;31m""At %u ms Philo %d is dead RIP\n", inst, phill->id);
 		phill->data->dead++;
-	}
 	if (state == 1)
 		printf("At %u ms Philo %d is""\033[1;34m"
 			" eating\n", inst, phill->id + 1);
@@ -70,6 +67,8 @@ void	printmsg(int state, t_philos *phill, unsigned int inst)
 	if (state == 5)
 		printf("At %u ms Philo %d take 2nd ""\033[1;33m"
 			"fork \n", inst, phill->id + 1);
+	if(state== 0)
+		printf("\033[1;31m""At %u ms Philo %d is dead RIP\n", inst, phill->id);
 	printf("\033[0m");
 	pthread_mutex_unlock(&phill->data->to_print);
 	pthread_mutex_unlock(&phill->data->block);

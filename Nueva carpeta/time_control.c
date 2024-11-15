@@ -5,7 +5,7 @@ void	eat(t_philos *philo)
 	pthread_mutex_t	*fork1;
 	pthread_mutex_t	*fork2;
 
-	if (philo->l_f < philo->r_f)
+	if (philo->id % 2 == 0 && philo->data->phi_num % 2 == 0)
 	{
 		fork1 = philo->l_f;
 		fork2 = philo->r_f;
@@ -68,7 +68,8 @@ void	printmsg(int state, t_philos *phill, unsigned int inst)
 		printf("At %u ms Philo %d take 2nd ""\033[1;33m"
 			"fork \n", inst, phill->id + 1);
 	if(state== 0)
-		printf("\033[1;31m""At %u ms Philo %d is dead RIP\n", inst, phill->id);
+		printf("\033[1;31m""At %u ms Philo %d is dead RIP\n"
+			, inst, phill->id + 1);
 	printf("\033[0m");
 	pthread_mutex_unlock(&phill->data->to_print);
 	pthread_mutex_unlock(&phill->data->block);

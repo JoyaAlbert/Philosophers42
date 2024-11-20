@@ -1,6 +1,20 @@
 #include "header_philo.h"
 
-void	eat(t_philos *philo)
+void *left(t_philos *philo, int n)
+{
+	if (philo->id % 2 == 0 && n % 2 == 0)
+	{
+		pthread_mutex_unlock(philo->r_f);
+		pthread_mutex_unlock(philo->l_f);
+	}
+	else
+	{
+		pthread_mutex_unlock(philo->l_f);
+		pthread_mutex_unlock(philo->r_f);
+	}	
+	return ((void *)0);
+}
+void	*eat(t_philos *philo)
 {
 	int	n;
 
@@ -17,24 +31,18 @@ void	eat(t_philos *philo)
 		pthread_mutex_lock(philo->r_f);
 		pthread_mutex_lock(philo->l_f);
 	}
-	info_user(4, philo);
-	info_user(5, philo);
+	if(info_user(4, philo)== 0)
+		return (left(philo, n));
+	if(info_user(5, philo)==0)
+		return (left(philo, n));
 	pthread_mutex_lock(&philo->block);
 	philo->ttd = time_state() + philo->data->ttd;	
 	philo->eated++;
 	pthread_mutex_unlock(&philo->block);
-	info_user(1, philo);
+	if(info_user(1, philo)==0)
+		return (left(philo, n));
 	nap(philo->data->tte);
-	if (philo->id % 2 == 0 && n % 2 == 0)
-	{
-		pthread_mutex_unlock(philo->r_f);
-		pthread_mutex_unlock(philo->l_f);
-	}
-	else
-	{
-		pthread_mutex_unlock(philo->l_f);
-		pthread_mutex_unlock(philo->r_f);
-	}	
+	return (left(philo, n));
 }
 
 void	nap(unsigned int alarm)
@@ -83,7 +91,7 @@ void	printmsg(int state, t_philos *phill, unsigned int inst)
 	pthread_mutex_unlock(&phill->data->block);
 }
 
-void	info_user(int state, t_philos *phill)
+int	info_user(int state, t_philos *phill)
 {
 	unsigned int	inst;
 
@@ -91,10 +99,10 @@ void	info_user(int state, t_philos *phill)
 	inst = time_state() - phill->data->s_time;
 	if (phill->data->dead != 0)
 	{
-		
 		pthread_mutex_unlock(&phill->data->block);
-		return ((void) NULL);
+		return(0);
 	}
 	pthread_mutex_unlock(&phill->data->block);
 	printmsg(state, phill, inst);
+	return (1);
 }

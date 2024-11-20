@@ -12,7 +12,7 @@ int	check_finished(t_philos *phill)
 	if (phill->eated == data->n_toeat)
 	{
 		pthread_mutex_unlock(&phill->block);
-		return 0;
+		return (0);
 	}
 	pthread_mutex_unlock(&phill->block);
 	pthread_mutex_lock(&data->block);
@@ -63,9 +63,11 @@ void	*life(void *phill)
 	while (check_finished(entitie) == 1)
 	{
 		eat(entitie);
-		info_user(2, entitie);
+		if(info_user(2, entitie) == 0)
+			break;
 		nap(entitie->data->tts);
-		info_user(3, entitie);
+		if(info_user(3, entitie) == 0)
+			break;
 		usleep(1);
 	}
 	return ((void *)0);

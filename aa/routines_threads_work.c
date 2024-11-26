@@ -1,6 +1,5 @@
 #include "header_philo.h"
 
-
 int	check_finished(t_philos *phill)
 {
 	t_data	*data;
@@ -52,23 +51,40 @@ void	*is_alive(void *p_data)
 	return ((void *)0);
 }
 
-
 void	*life(void *phill)
 {
 	t_philos	*entitie;
-	
+
 	entitie = (t_philos *) phill;
 	if (entitie->id % 2 == 0)
 		usleep(50);
 	while (check_finished(entitie) == 1)
 	{
-		eat(entitie);
-		if(info_user(2, entitie) == 0)
-			break;
+		if (eat(entitie) == 0)
+			break ;
+		if (info_user(2, entitie) == 0)
+			break ;
 		nap(entitie->data->tts);
-		if(info_user(3, entitie) == 0)
-			break;
+		if (info_user(3, entitie) == 0)
+			break ;
 		usleep(1);
 	}
 	return ((void *)0);
+}
+
+void	nap(unsigned int alarm)
+{
+	unsigned int	gotobed;
+
+	gotobed = time_state();
+	while (((time_state() - gotobed)) < alarm)
+		usleep(1);
+}
+
+unsigned int	time_state(void)
+{
+	struct timeval	time;
+
+	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }

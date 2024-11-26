@@ -1,6 +1,6 @@
 #include "header_philo.h"
 
-void *left(t_philos *philo, int n)
+int	left(t_philos *philo, int n, int control)
 {
 	if (philo->id % 2 == 0 && n % 2 == 0)
 	{
@@ -11,17 +11,15 @@ void *left(t_philos *philo, int n)
 	{
 		pthread_mutex_unlock(philo->l_f);
 		pthread_mutex_unlock(philo->r_f);
-	}	
-	return ((void *)0);
+	}
+	if (control == 1)
+		return (0);
+	return (1);
 }
-void	*eat(t_philos *philo)
-{
-	int	n;
 
-	pthread_mutex_lock(&philo->data->block);
-	n = philo->data->phi_num;
-	pthread_mutex_unlock(&philo->data->block);
-	if (philo->id % 2 == 0  && n % 2 == 0)
+void	take(t_philos *philo, int n)
+{
+	if (philo->id % 2 == 0 && n % 2 == 0)
 	{
 		pthread_mutex_lock(philo->l_f);
 		pthread_mutex_lock(philo->r_f);
@@ -31,35 +29,28 @@ void	*eat(t_philos *philo)
 		pthread_mutex_lock(philo->r_f);
 		pthread_mutex_lock(philo->l_f);
 	}
-	if(info_user(4, philo)== 0)
-		return (left(philo, n));
-	if(info_user(5, philo)==0)
-		return (left(philo, n));
+}
+
+int	eat(t_philos *philo)
+{
+	int	n;
+
+	pthread_mutex_lock(&philo->data->block);
+	n = philo->data->phi_num;
+	pthread_mutex_unlock(&philo->data->block);
+	take(philo, n);
+	if (info_user(4, philo) == 0)
+		return (left(philo, n, 1));
+	if (info_user(5, philo) == 0)
+		return (left(philo, n, 1));
 	pthread_mutex_lock(&philo->block);
-	philo->ttd = time_state() + philo->data->ttd;	
+	philo->ttd = time_state() + philo->data->ttd;
 	philo->eated++;
 	pthread_mutex_unlock(&philo->block);
-	if(info_user(1, philo)==0)
-		return (left(philo, n));
+	if (info_user(1, philo) == 0)
+		return (left(philo, n, 1));
 	nap(philo->data->tte);
-	return (left(philo, n));
-}
-
-void	nap(unsigned int alarm)
-{
-	unsigned int	gotobed;
-
-	gotobed = time_state();
-	while (((time_state() - gotobed)) < alarm)
-		usleep(1);
-}
-
-unsigned int	time_state(void)
-{
-	struct timeval	time;
-
-	gettimeofday(&time, NULL);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+	return (left(philo, n, 0));
 }
 
 void	printmsg(int state, t_philos *phill, unsigned int inst)
@@ -100,9 +91,11 @@ int	info_user(int state, t_philos *phill)
 	if (phill->data->dead != 0)
 	{
 		pthread_mutex_unlock(&phill->data->block);
-		return(0);
+		return (0);
 	}
 	pthread_mutex_unlock(&phill->data->block);
 	printmsg(state, phill, inst);
+	if (state == 0)
+		exit(0);
 	return (1);
 }

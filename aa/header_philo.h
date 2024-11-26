@@ -38,7 +38,7 @@ typedef struct s_philos
 
 //threads
 void			*life(void *phil);
-void			*eat(t_philos *philo);
+int				eat(t_philos *philo);
 int				onephilo(t_data *data);
 int				morephilo(t_data *data);
 void			destroy_frees(t_data *data);
@@ -49,7 +49,7 @@ int				ft_isdigit(int c);
 //timing
 unsigned int	time_state(void);
 void			nap(unsigned int alarm);
-int	info_user(int state, t_philos *phill);
+int				info_user(int state, t_philos *phill);
 int				check_finished(t_philos *phill);
 
 #endif

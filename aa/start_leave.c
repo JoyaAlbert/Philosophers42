@@ -31,7 +31,6 @@ int	morephilo(t_data *data)
 	pthread_detach(status_thread);
 	while (++i < data->phi_num)
 	{
-
 		if (pthread_create(&data->thread_id[i], NULL, &life, &data->philos[i]))
 			return (-1);
 		usleep(1);
@@ -50,16 +49,15 @@ void	destroy_frees(t_data *data)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	pthread_mutex_destroy(&data->to_print);
 	pthread_mutex_destroy(&data->block);
-	while (i < data->phi_num)
+	while (++i < data->phi_num)
 	{
 		pthread_mutex_destroy(&data->forks[i]);
 		pthread_mutex_destroy(&data->philos->l_f[i]);
 		pthread_mutex_destroy(&data->philos->r_f[i]);
 		pthread_mutex_destroy(&data->philos[i].block);
-		i++;
 	}
 	free(data->thread_id);
 	free(data->philos);
